@@ -2,6 +2,7 @@ import React from 'react'
 import { Scene, Router, Actions } from 'react-native-router-flux'
 import LoginForm from './LoginForm'
 import FeedSettings from './FeedSettings'
+import EventDeckContainer from './containers/EventDeckContainer'
 
 const RouterComponent = () => {
   return (
@@ -14,6 +15,10 @@ const RouterComponent = () => {
 
         <Scene key="main">
           <Scene key="account" component={FeedSettings} title="Feed Settings" />
+        </Scene>
+
+        <Scene key="search">
+          <Scene key="eventDeck" component={EventDeckContainer} title="Your Feed" />
         </Scene>
 
       </Scene>

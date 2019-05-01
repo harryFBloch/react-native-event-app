@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Text, View} from 'react-native'
+import { Actions } from 'react-native-router-flux'
 import { Card, CardItem, FormInput, Button, Spinner } from './common'
 import { BEARER_TOKEN } from './token'
 import MultiSelectComponent from './MultiSelectComponent'
@@ -30,7 +31,7 @@ export default class FeedSettings extends Component {
         <MultiSelectComponent categories={this.state.allCategories}/>
 
         <CardItem>
-          <Button text="Search For Events" fireButton={() => console.log("CLICK")} />
+          <Button text="Search For Events" fireButton={() => Actions.search() }/>
         </CardItem>
       </View>
     )
