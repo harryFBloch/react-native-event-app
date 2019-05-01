@@ -1,18 +1,13 @@
 import React, {Component} from 'react'
 import { View, Dimensions } from 'react-native';
+import { connect } from 'react-redux'
+import { selectedCatagoriesChange } from './actions'
 import { MultipleSelect, Card } from "./common";
 
 var { width, height } = Dimensions.get('window');
 
 
-export default class MultiSelectComponent extends Component {
-
-  constructor(){
-    super()
-    this.state = {
-      selectedCatagories: []
-    }
-  }
+class MultiSelectComponent extends Component {
 
   createCatagoryList = () => {
     let catagoryList = {}
@@ -26,7 +21,7 @@ export default class MultiSelectComponent extends Component {
 
   render() {
   const catagoryList = this.createCatagoryList()
-  const { selectedCatagories } = this.state;
+  const { selectedCatagories } = this.props;
    return (
     <Card>
      <MultipleSelect
@@ -36,7 +31,7 @@ export default class MultiSelectComponent extends Component {
         placeholder={"Search"}
         placeholderTextColor={'#757575'}
         returnValue={"label"} // label or value
-        callback={(selectedCatagories)=> this.setState({ selectedCatagories })} // callback, array of selected items
+        callback={(selectedCatagories) => this.props.selectedCatagoriesChange(selectedCatagories)} // callback, array of selected items
         rowBackgroundColor={"#eee"}
         rowHeight={40}
         rowRadius={5}
@@ -51,3 +46,9 @@ export default class MultiSelectComponent extends Component {
    );
  }
 }
+
+mapStateToProps = (state) => {
+  return { selectedCatagories: state.selectedCatagories }
+}
+
+export default connect(mapStateToProps, { selectedCatagoriesChange })(MultiSelectComponent)

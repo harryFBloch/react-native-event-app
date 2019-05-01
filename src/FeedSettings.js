@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Text} from 'react-native'
+import {Text, View} from 'react-native'
 import { Card, CardItem, FormInput, Button, Spinner } from './common'
 import { BEARER_TOKEN } from './token'
 import MultiSelectComponent from './MultiSelectComponent'
@@ -26,7 +26,13 @@ export default class FeedSettings extends Component {
 
   render(){
     return (
-      <MultiSelectComponent categories={this.state.allCategories}/>
+      <View>
+        <MultiSelectComponent categories={this.state.allCategories}/>
+
+        <CardItem>
+          <Button text="Search For Events" fireButton={() => console.log("CLICK")} />
+        </CardItem>
+      </View>
     )
   }
 }
