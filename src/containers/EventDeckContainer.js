@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, Dimensions } from 'react-native'
+import { StyleSheet, View, Text, Dimensions, Linking } from 'react-native'
 import { connect } from 'react-redux'
 import { Card, Button } from 'react-native-elements'
 import { CardItem, Deck} from '../common'
@@ -36,14 +36,13 @@ class EventDeckContainer extends Component {
   }
 
   renderCard = ( item ) => {
-    
     return (
       <Card title={item.name.text.slice(0,30)} image={{ uri: item.logo.url }} key={item.id}>
           <View style={{height: 75}}>
           <Text>{item.venue.address.city}</Text>
           <Text style={{ marginBottom: 10 }}>{item.description.text.replace(/(\r\n|\n|\r)/gm, "")}</Text>
           </View>
-          <Button icon={{name: 'code'}} backgroundColor='#03A9F4' title="View Now!"/>
+          <Button icon={{name: 'code'}} backgroundColor='#03A9F4' title="View Now!" onPress={() => Linking.openURL(item.url)}/>
       </Card>
     )
   }
