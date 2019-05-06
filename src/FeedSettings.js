@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
 import {Text, View} from 'react-native'
+import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import { Card, CardItem, FormInput, Button, Spinner } from './common'
 import { BEARER_TOKEN } from './token'
 import MultiSelectComponent from './MultiSelectComponent'
+import { userLocationChange } from './actions'
 
-export default class FeedSettings extends Component {
+class FeedSettings extends Component {
 
   constructor(){
     super()
     this.state = { allCategories: [] }
   }
 
-  componentWillMount(){
+  componentDidMount(){
+    this.getLocation()
     fetch("https://www.eventbriteapi.com/v3/categories/", {
       headers: {
         'Authorization': 'Bearer ' + BEARER_TOKEN,
@@ -23,6 +26,16 @@ export default class FeedSettings extends Component {
           this.setState({ allCategories: json.categories })
         })
         .catch(error => console.log(error))
+  }
+
+  getLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.props.userLocationChange(position)
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
   }
 
   render(){
@@ -37,3 +50,5 @@ export default class FeedSettings extends Component {
     )
   }
 }
+
+export default connect(null, { userLocationChange })(FeedSettings)

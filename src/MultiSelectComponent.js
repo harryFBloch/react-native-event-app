@@ -9,19 +9,24 @@ var { width, height } = Dimensions.get('window');
 
 class MultiSelectComponent extends Component {
 
-  createCatagoryList = () => {
+  createCategoryList = (catagoriesObjects) => {
     let catagoryList = {}
 
-    this.props.categories.map((category) => {
+    catagoriesObjects.map((category) => {
       catagoryList[category.id] = category.name
     })
-    console.log(catagoryList)
     return catagoryList
   }
 
+  createCatagoryObjectFromList = (categoryList) => {
+    let objectList = categoryList.map( catagoryName => {
+      return this.props.categories.find(category => category.name === catagoryName)
+    })
+    return objectList
+  }
+
   render() {
-  const catagoryList = this.createCatagoryList()
-  const { selectedCatagories } = this.props;
+  const catagoryList = this.createCategoryList(this.props.categories)
    return (
     <Card>
      <MultipleSelect
@@ -31,7 +36,7 @@ class MultiSelectComponent extends Component {
         placeholder={"Search"}
         placeholderTextColor={'#757575'}
         returnValue={"label"} // label or value
-        callback={(selectedCatagories) => this.props.selectedCatagoriesChange(selectedCatagories)} // callback, array of selected items
+        callback={(selected) => this.props.selectedCatagoriesChange(this.createCatagoryObjectFromList(selected))} // callback, array of selected items
         rowBackgroundColor={"#eee"}
         rowHeight={40}
         rowRadius={5}
