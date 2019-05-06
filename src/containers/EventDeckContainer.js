@@ -16,28 +16,31 @@ class EventDeckContainer extends Component {
 
   componentDidMount(){
     const categoryString = this.props.selectedCatagories.map(cat => cat.id).join()
-    const {latitude, longitude} = this.props.location
-    const params = {'location.latitude': latitude, 'location.longitude': longitude, categories: categoryString}
+    const { latitude, longitude } = this.props.location
+    const params = {'location.latitude': latitude, 'location.longitude': longitude, categories: categoryString, 'location.within': "2mi", 'expand': 'venue'}
     let str = Object.entries(params).map(([key, val]) => `${key}=${val}`).join('&');
     let urlString = "https://www.eventbriteapi.com/v3/events/search"
     const url = `${urlString}/?${str}`
-    debugger
+    console.log(url)
     fetch( url, {
       headers: {
         'Authorization': 'Bearer ' + BEARER_TOKEN,
-        'Content-Type': 'application/json'
+        'Accept': 'application/json'
       }
     }).then(data => data.json())
     .then(jsonData => {
+      console.log(jsonData)
       this.setState({ events: jsonData.events})
     })
     .catch(error => console.log(error))
   }
 
   renderCard = ( item ) => {
+    
     return (
       <Card title={item.name.text.slice(0,30)} image={{ uri: item.logo.url }} key={item.id}>
           <View style={{height: 75}}>
+          <Text>{item.venue.address.city}</Text>
           <Text style={{ marginBottom: 10 }}>{item.description.text.replace(/(\r\n|\n|\r)/gm, "")}</Text>
           </View>
           <Button icon={{name: 'code'}} backgroundColor='#03A9F4' title="View Now!"/>
